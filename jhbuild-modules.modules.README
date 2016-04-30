@@ -1,0 +1,5 @@
+# Comments for jhbuild-modules
+For comments which are difficult to be placed in XML.
+
+## gcc-5.2
+  * without `--disable-multilib` `configure` fails due to `configure: error: I suspect your system does not have 32-bit developement libraries (libc and headers). If you have them, rerun configure with --enable-multilib. If you do not have them, and want to build a 64-bit-only compiler, rerun configure with --disable-multilib.`

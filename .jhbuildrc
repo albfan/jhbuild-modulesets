@@ -1,0 +1,21 @@
+import logging
+
+# the prefix to configure/install modules to (must have write access)
+prefix_env_var_name = "JHBUILD_PREFIX"
+prefix_default = os.path.expanduser('~/prefix-stable-x86_64')
+if not os.getenv(prefix_env_var_name) is None:
+    prefix = os.path.realpath(os.getenv(prefix_env_var_name))
+    logging.info("environment variable %s defined -> using prefix '%s'" 
+% (prefix_env_var_name, prefix, ))
+else:
+    prefix = prefix_default
+    logging.info("environment variable %s not defined -> using default prefix '%s'" % (prefix_env_var_name, prefix, ))
+
+nopoison = True
+use_local_modulesets = True
+    #False causes HTTP 404 of unexplainable address (insufficient feedback)
+makeargs='-j40'
+os.environ['PKG_CONFIG_PATH'] = '/usr/lib/pkgconfig/:$HOME/prefix/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig'
+#os.environ['CPPFLAGS'] = '-I/usr/include/gtk-3.0 -I/usr/include/pango-1.0 -I/usr/include/cairo -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/atk-1.0 -I/usr/include/glib-2.0'
+build_policy = 'updated-deps'
+checkoutroot = os.path.expanduser('~/sources')

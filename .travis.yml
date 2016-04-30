@@ -1,0 +1,16 @@
+language: bash
+dist: trusty
+before_script:
+- sudo apt-get update
+- sudo apt-get install jhbuild
+# naively assume that `g++` is available (otherwise `gcc` bootstrapping needs to be setup)
+- sudo apt-get install g++ flex flexc++
+- sudo apt-get build-dep gcc-4.8 g++-4.8
+# multiline cat statements don't work (see
+# https://richtercloud.de:446/doku.php?id=web_services:travis-ci.org for
+# details) -> managing .jhbuildrc in the repo isn't a bad idea
+- git clone https://github.com/GNOME/jhbuild.git && cd jhbuild && ./autogen.sh && make -j16 && make install && cd ..
+- wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.xz && tar xf autoconf-2.69.tar.xz && cd autoconf-2.69 && ./configure && make -j16 && sudo make install && cd ..
+- wget http://ftp.gnu.org/gnu/automake/automake-1.15.tar.xz && tar xf automake-1.15.tar.xz && cd automake-1.15 && ./configure && make -j16 && sudo make install && cd ..
+script:
+- $HOME/.local/bin/jhbuild --file=.jhbuildrc --moduleset=jhbuild-modules.modules build midori htop
